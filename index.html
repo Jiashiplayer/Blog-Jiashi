@@ -4,7 +4,148 @@
 	<meta charset="UTF-8">
 	<meta name="viewport" content="width=device-width, initial-scale=1.0">
 	<title>Jiashi</title>
+	<link rel="stylesheet" href="css/bootstrap.css">
+	<link rel="stylesheet" href="css/index.css">
+	<script src="js/mock.js"></script>
 </head>
 <body>
+
+<nav class="navbar navbar-inverse" role="navigation">
+	<div class="container">
+		<div class="navbar-header">
+			<button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#example-navbar-collapse">
+				<span class="sr-only">切换导航</span>
+				<span class="icon-bar"></span>
+				<span class="icon-bar"></span>
+				<span class="icon-bar"></span>
+			</button>
+			<a class="navbar-brand" href="#">Jiashi</a>
+		</div>
+
+		<div class="navbar-right collapse navbar-collapse" id="example-navbar-collapse">
+			<form class="navbar-form navbar-left" role="search">
+				<div class="form-group">
+					<input type="text" class="form-control" placeholder="Search">
+					<button type="submit" class="btn glyphicon glyphicon-search"></button>
+				</div>
+			</form>
+			<ul class="nav navbar-nav">
+				<li class="active"><a href="#">首页</a></li>
+				<li><a href="#">SVN</a></li>
+				<li class="dropdown">
+					<a href="#" class="dropdown-toggle" data-toggle="dropdown">Java <b class="caret"></b>
+					</a>
+					<ul class="dropdown-menu">
+						<li><a href="#">jmeter</a></li>
+						<li><a href="#">EJB</a></li>
+						<li><a href="#">Jasper Report</a></li>
+						<li class="divider"></li>
+						<li><a href="#">分离的链接</a></li>
+						<li class="divider"></li>
+						<li><a href="#">另一个分离的链接</a></li>
+					</ul>
+				</li>
+			</ul>
+		</div>
+	</div>
+</nav>
+
+<div class="container main">
+	<div class="col-md-3">
+		<div class="user">
+			<div class="user-portrait">
+				<img src="img/headportrait.jpg" class="img-responsive img-circle img-thumbnail"/>
+			</div>
+			<div class="user-name">
+				<h4 class="text-center">Jiashi</h4>
+			</div>
+			<div class="user-info col-md-12">
+				<p>回与若易君然位人予有耳样小，谋帝者自娘答李国李判此，得之俭订是两反病种王失密即我帝郭生，子作的者虽找死便法，起会何够往洞我吞起主明帝母快，登论着是司贤变到大放，几仄谷但，便变活得乏谷羊开导严出恶，榜己的说洋她外在变磊之当洪，同来也身活，韩名则给上仍死行设。</p>
+			</div>
+		</div>
+	</div>
+	<div class="col-md-9" id="article">
+		<!-- <div class="media article" >
+			<div class="media-left media-top col-md-4">
+				<img src="img/1.jpg" class="img-responsive"/>
+			</div>
+			<div class="col-md-8">
+				<div class="panel">
+					<div class="panel-heading">
+						<h3 class="panel-title">是为方乐厅一你能，死杨使。</h3>
+					</div>
+					<div class="panel-body">
+						<p>如亓么，相弟分血年姑生得韩落，家洞灰求区，千通么井郭互负，联太之秦搏，学绛花侯也不在统魂统厅，大案不份他上韩明朗创人，句藏胸乐也的，为尽身一的君人打徨饮应穿同，上动人衣里故不吾居郭羊范不百老挟先秦上，活只俭我尚冷是前元友司，上所啊不制有会，后通登，承她反。</p>
+					</div>
+					<div class="panel-footer">
+						<div class="article-tips">
+							<span>Tips:</span>
+							<a href="#">JS</a>
+						</div>
+						<div class="article-date">
+							<span>Jiashi</span>
+							<span>浏览：200</span>
+							<span>评论：2</span>
+							<span>点赞：20</span>
+							<span>April 11</span>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div> -->
+	</div>
+</div>
+
+<script src="js/jquery.js"></script>
+<script src="js/bootstrap.js"></script>
+<script src="js/moc.js"></script>
+<script>
+	
+	$.ajax({
+		url:'http://www.jiekou.com',
+		type:'get',
+		dataType:'json'
+	})
+	.done(function (data) {
+		$.each(data.result, function(index,value){
+		var inner = $(`
+			<div class="media article">
+				<div class="media-left media-top col-md-4">
+					<img src="img/${value.imgName}" class="img-responsive"/>
+				</div>
+				<div class="col-md-8">
+					<div class="panel">
+						<div class="panel-heading">
+							<h3 class="panel-title">${value.title}</h3>
+						</div>
+						<div class="panel-body">
+							<p>${value.summary}</p>
+						</div>
+						<div class="panel-footer">
+							<div class="article-tips">
+								<span>Tips:</span>
+								<a href="#">${value.tips}</a>
+							</div>
+							<div class="article-date">
+								<span>Jiashi</span>
+								<span>浏览：${value.view}</span>
+								<span>评论：${value.comment}</span>
+								<span>点赞：${value.zan}</span>
+								<span>${value.date}</span>
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+		`)
+		
+		$('#article').append($(inner))
+		})
+	})
+	.fail(function () {
+		console.log('error');
+	})
+</script>
+
 </body>
 </html>
