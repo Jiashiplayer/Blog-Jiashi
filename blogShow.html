@@ -1,0 +1,133 @@
+<!DOCTYPE html>
+<html lang="zh">
+<head>
+	<meta charset="UTF-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<title>blogShow</title>
+	<link rel="stylesheet" href="css/bootstrap.css">
+	<link rel="stylesheet" href="css/public.css">
+	<link rel="stylesheet" href="css/index.css">
+	<script src="js/mock.js"></script>
+
+</head>
+<body>
+
+<header id="topnav"></header>
+
+<div class="container main">
+	<div class="col-md-12" id="article">
+	</div>
+	<div class="col-md-12">
+		<div class="col-xs-4">
+			<span class="jumpTo" id="jumpTo-pre">上一篇</span>
+		</div>
+		<div class="col-xs-4 pull-right">
+			<span class="jumpTo" id="jumpTo-nex">下一篇</span>
+		</div>
+	</div>
+</div>
+
+<script src="js/jquery.js"></script>
+<script src="js/bootstrap.js"></script>
+<script src="js/model.js"></script>
+<script src="js/moc.js"></script>
+
+<!-- <script>
+	// console.log(getUrlName().articleId)
+	$.get('http://www.jiashi.com/blogs',function(res){
+		// console.log(res)
+		$.each(res.result ,function(index,value){
+			if(value.id === parseInt(getUrlName().articleId) ){
+				// console.log(value)
+				var inner = $(`
+					<div class="media article">
+						<div class="media-left media-top col-md-6 col-md-offset-3">
+							<img src="img/${value.imgSrc}" class="img-responsive"/>
+						</div>
+						<div class="col-md-12">
+							<div class="panel">
+								<div class="panel-heading" style="text-align: center;">
+									<h3 class="panel-title">${value.title}</h3>
+								</div>
+								<div class="panel-body">
+									<p>${value.summary}</p>
+									<p>${value.contents}</p>
+								</div>
+								<div class="panel-footer">
+									<div class="article-tips">
+										<span>Tips:</span>
+										<a href="#">${value.tips}</a>
+									</div>
+									<div class="article-date">
+										<span>${value.username}</span>
+										<span>浏览：${value.view}</span>
+										<span>评论：${value.comment}</span>
+										<span>点赞：${value.zan}</span>
+										<span>${value.date}</span>
+									</div>
+								</div>
+							</div>
+						</div>
+					</div>
+				`)
+				$('#article').append($(inner))
+			}
+		})
+	},'json')
+</script> -->
+<script>
+	var curid = parseInt(getUrlName().articleId);
+	var nextid = curid+1;
+	var preid = curid-1;
+	if(curid === 1){
+		preid = 1;
+		$("#jumpTo-pre").css("display","none");
+	}
+
+	$.get('http://api.hzbiz.net/0103/api/blogs.php',{id:getUrlName().articleId},function(res){
+		var value = res.blogs[0];
+		var inner = $(`
+			<div class="media article">
+				<div class="media-top col-md-6 col-md-offset-3">
+					<img src="${value.url}" class="img-responsive"/>
+				</div>
+				<div class="col-md-12">
+					<div class="panel">
+						<div class="panel-heading" style="text-align: center;">
+							<h3 class="panel-title">${value.title}</h3>
+						</div>
+						<div class="panel-body">
+							<p>${value.body}</p>
+						</div>
+						<div class="panel-footer">
+							<div class="article-tips">
+								<span>Tips:</span>
+								<a href="#">JS</a>
+							</div>
+							<div class="article-date">
+								<span>${value.username}</span>
+								<span>浏览：200</span>
+								<span>评论：2</span>
+								<span>点赞：10</span>
+								<span>${value.ctime}</span>
+								<span>${value.city}</span>
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+		`)
+		$('#article').append($(inner))
+	},'json')
+	
+	$("#jumpTo-pre").click(function(){
+		window.open(`blogShow.html?articleId=${preid}`,'_self')
+		console.log(preid)
+	})
+	$("#jumpTo-nex").click(function(){
+		window.open(`blogShow.html?articleId=${nextid}`,'_self')
+		console.log(nextid)
+	})
+</script>
+</body>
+</html>

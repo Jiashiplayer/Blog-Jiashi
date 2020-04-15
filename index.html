@@ -5,11 +5,14 @@
 	<meta name="viewport" content="width=device-width, initial-scale=1.0">
 	<title>Jiashi</title>
 	<link rel="stylesheet" href="css/bootstrap.css">
+	<link rel="stylesheet" href="css/public.css">
 	<link rel="stylesheet" href="css/index.css">
 	<script src="js/mock.js"></script>
+	<script src="js/model.js"></script>
+
 </head>
 <body>
-
+<header id="topnav"></header>
 <nav class="navbar navbar-inverse" role="navigation">
 	<div class="container">
 		<div class="navbar-header">
@@ -19,7 +22,7 @@
 				<span class="icon-bar"></span>
 				<span class="icon-bar"></span>
 			</button>
-			<a class="navbar-brand" href="#">Jiashi</a>
+			<a class="navbar-brand" href="index.html">Jiashi</a>
 		</div>
 
 		<div class="navbar-right collapse navbar-collapse" id="example-navbar-collapse">
@@ -30,19 +33,16 @@
 				</div>
 			</form>
 			<ul class="nav navbar-nav">
-				<li class="active"><a href="#">首页</a></li>
-				<li><a href="#">SVN</a></li>
+				<!-- <li class="active"><a href="index.html">首页</a></li> -->
+				<!-- <li><a href="#">SVN</a></li> -->
 				<li class="dropdown">
-					<a href="#" class="dropdown-toggle" data-toggle="dropdown">Java <b class="caret"></b>
-					</a>
+					<a href="#" class="dropdown-toggle" data-toggle="dropdown">管理<b class="caret"></b></a>
 					<ul class="dropdown-menu">
-						<li><a href="#">jmeter</a></li>
-						<li><a href="#">EJB</a></li>
-						<li><a href="#">Jasper Report</a></li>
-						<li class="divider"></li>
+						<li><a href="#">写文章</a></li>
+						<!-- <li class="divider"></li>
 						<li><a href="#">分离的链接</a></li>
 						<li class="divider"></li>
-						<li><a href="#">另一个分离的链接</a></li>
+						<li><a href="#">另一个分离的链接</a></li> -->
 					</ul>
 				</li>
 			</ul>
@@ -98,22 +98,22 @@
 
 <script src="js/jquery.js"></script>
 <script src="js/bootstrap.js"></script>
+<script src="js/model.js"></script>
 <script src="js/moc.js"></script>
 <script>
-	
 	$.ajax({
-		url:'http://www.jiekou.com',
+		url:'http://www.jiashi.com/blogs',
 		type:'get',
 		dataType:'json'
 	})
-	.done(function (data) {
-		$.each(data.result, function(index,value){
+	.done(function (res) {
+		$.each(res.result, function(index,value){
 		var inner = $(`
 			<div class="media article">
 				<div class="media-left media-top col-md-4">
-					<img src="img/${value.imgName}" class="img-responsive"/>
+					<img src="img/${value.imgSrc}" class="img-responsive"/>
 				</div>
-				<div class="col-md-8">
+				<div class="col-md-8" onclick="window.open('blogShow.html?articleId=${value.id}')">
 					<div class="panel">
 						<div class="panel-heading">
 							<h3 class="panel-title">${value.title}</h3>

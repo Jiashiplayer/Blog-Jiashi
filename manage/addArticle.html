@@ -1,0 +1,147 @@
+<!DOCTYPE html>
+<html lang="zh">
+<head>
+	<meta charset="UTF-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<title>写文章</title>
+	<link rel="stylesheet" href="../css/bootstrap.css">
+	<link rel="stylesheet" href="../css/public.css">
+	<link rel="stylesheet" href="../css/manage.css">
+	<link rel="stylesheet" href="../css/iconfont.css">
+	<script src="../js/jquery.js"></script>
+	<script src="../js/bootstrap.js"></script>
+	<script src="../js/mock.js"></script>
+</head>
+<body>
+<header id="topnav"></header>
+
+<div class="container main">
+<h1>写文章</h1>
+<div class="col-md-8 col-md-offset-2">
+	<form role="form" id="upLoadArticle">
+		<div class="form-group">
+			<div class="col-md-12 addimg" id="picBox">
+				<input type="file" id="inputfile" name="imgsrc">
+				<input type="hidden" id="base64Pic">
+				<span class="iconfont icon-tupian"></span>
+				<span>点击添加图片</span>
+				<img src="" class="upload-pic" id="upload-pic">
+			</div>
+		</div>
+		<div class="form-group">
+			<input type="text" class="form-control title" id="title" name="title" placeholder="请填写标题" autocomplete="off">
+		</div>
+		<div class="form-group">
+			<input type="text" class="form-control summary" id="summary" name="summary" autocomplete="off" placeholder="请填写导语（选填）">
+		</div>
+		<div class="form-group">
+			<div class="row editor" title="做作样子，莫得功能">
+				<div class="col-xs-2">
+					<span class="iconfont icon-chexiao" title="撤销"></span>
+					<span class="iconfont icon-zhongzuo" title="重做"></span>
+				</div>
+				<div class="col-xs-3">
+					<span class="iconfont icon-jiacu" title="加粗"></span>
+					<span class="iconfont icon-xieti" title="斜体"></span>
+					<span class="iconfont icon-xiahuaxian" title="下划线"></span>
+				</div>
+				<div class="col-xs-5">
+					<span class="dropdown" title="标题">
+						<span data-toggle="dropdown" class="dropdown-toggle">正文<b class="caret"></b></span>
+						<ul class="dropdown-menu" role="menu" aria-labelledby="dLabel">
+							<li><a href="JavaScript:;">正文</a></li>
+							<li><a href="JavaScript:;">H1</a></li>
+							<li><a href="JavaScript:;">H2</a></li>
+							<li><a href="JavaScript:;">H3</a></li>
+							<li><a href="JavaScript:;">H4</a></li>
+						</ul>
+					</span>
+					<span class="dropdown" title="无序列表">
+						<span data-toggle="dropdown" class="iconfont icon-wuxuliebiao"><b class="caret"></b></span>
+						<ul class="dropdown-menu" role="menu" aria-labelledby="dLabel">
+							<li><a href="JavaScript:;">○小圆圈</a></li>
+							<li><a href="JavaScript:;">●小圆点</a></li>
+							<li><a href="JavaScript:;">■小方块</a></li>
+						</ul>
+					</span>
+					<span class="dropdown" title="有序列表">
+						<span data-toggle="dropdown" class="iconfont icon-youxuliebiao"><b class="caret"></b></span>
+						<ul class="dropdown-menu" role="menu" aria-labelledby="dLabel">
+							<li><a href="JavaScript:;">1,2,3…</a></li>
+							<li><a href="JavaScript:;">a,b,c…</a></li>
+							<li><a href="JavaScript:;">i,ii,iii…</a></li>
+							<li><a href="JavaScript:;">A,B,C…</a></li>
+							<li><a href="JavaScript:;">I,II,III…</a></li>
+						</ul>
+					</span>
+					<span class="iconfont icon-758bianjiqi_fengexian" title="分割线"></span>
+					<span class="iconfont icon-yinyong" title="引用"></span>
+				</div>
+				<div class="col-xs-2">
+					<span class="iconfont icon-chaolianjie" title="超链接"></span>
+					<span class="iconfont icon-tupian" title="插入图片"></span>
+				</div>
+			</div>
+			<textarea class="form-control contents" id="contents" name="body" rows="10" placeholder="请输入正文"></textarea>
+		</div>
+		<button type="submit" class="btn btn-primary pull-right">提交</button>
+		<button type="submit" class="btn btn-success">保存</button>
+	</form>
+</div>
+
+</div>
+
+
+<script src="../js/model.js"></script>
+<script src="../js/moc.js"></script>
+<script>
+	$('#inputfile').change(function(){
+		let pic = $(this)[0].files[0];
+		console.log(pic);
+		let reader = new FileReader();
+		reader.readAsDataURL(pic);
+
+		reader.onload = function(){
+			console.log(this);
+			var resultCut = this.result.substring(this.result.indexOf(',')+1);
+			$('#base64Pic').val(this.result)
+			let img = new Image();
+			img.src = this.result;
+			img.onload = function(){
+				let boxWid = parseInt($("#picBox").css("width"));
+				if(this.width >= boxWid){
+					let scale = boxWid / this.width;
+					$("#picBox").css("height",this.height * scale)
+					console.log(scale)
+				} else{
+					$("#picBox").css("height",this.height)
+					$("#picBox").css("width",this.width)
+				}
+			}
+			$("#upload-pic").attr("src",this.result)
+			$("#upload-pic").css("display","block");
+		}
+	})
+
+	$("#upLoadArticle").on("submit",function(e){
+		let now = new Date()
+		let time = now.toLocaleDateString() +" "+ now.toTimeString().substring(0,now.toTimeString().indexOf(' '))
+		console.log(time)
+		e.preventDefault();
+		let obj = {
+			title:$('#title').val(),
+			body:$('#contents').val(),
+			ctime: time,
+			city: Mock.mock('@city()'),
+			username:"Jiashi",
+			url:$("#base64Pic").val()
+		}
+		console.log(obj)
+		$.post("http://api.hzbiz.net/0103/api/postNews.php",obj,function(res){
+			console.log(res)
+		})
+	})
+</script>
+
+</body>
+</html>
